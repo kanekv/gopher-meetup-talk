@@ -1,0 +1,22 @@
+TBD - Title
+TBD - subtitle
+10 Jul 2015
+Tags: denvergophers, sendgrid, gophercon2015
+
+Kane Kim
+Senior Engineer, SendGrid
+kane@sendgrid.com
+https://github.com/Kane-Sendgrid/gopher-meetup-talk
+@KaneKK
+
+* Performance Tweaks - Lessons Learned
+- SendGrid's inbound mail servers process 19B+ emails/month
+- 137 servers around the world running Python/Twisted to handle that load
+- Rewrite in optimized Go, reducing server need from 137 -> 1
+
+* Topic Covered
+- Methodologies
+- Benchmarks and results
+- Tips and Tricks
+
+* More to come soon
