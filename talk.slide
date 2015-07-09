@@ -33,6 +33,10 @@ Co-founder, Sendgrid
 
 .play code/big_maps/big_map_test.go /BEGIN/,/END/
 
+* Large linked lists
+
+.play code/linked_lists/linked_list_test.go /BEGIN/,/END/
+
 * More to come soon
 
 
