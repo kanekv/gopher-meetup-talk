@@ -4,10 +4,16 @@ TBD - subtitle
 Tags: denvergophers, sendgrid, gophercon2015
 
 Kane Kim
-Senior Engineer, SendGrid
+Engineer, SendGrid
 kane@sendgrid.com
 https://github.com/Kane-Sendgrid/gopher-meetup-talk
 @KaneKK
+
+Vasko Zdravevski,
+Engineer, Sendgrid
+
+Isaac Saldana
+Co-founder, Sendgrid
 
 * Performance Tweaks - Lessons Learned
 - SendGrid's inbound mail servers process 19B+ emails/month
