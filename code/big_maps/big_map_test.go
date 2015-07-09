@@ -14,12 +14,17 @@ func TestLargeMapGC(t *testing.T) {
 	runtime.GC()
 }
 
+func BenchmarkLargeMapGC(b *testing.B) {
+}
+
 // END OMIT
 
 func main() {
+	flag.Set("test.bench", "Large")
 	flag.Set("test.v", "true")
+
 	testing.Main(func(pat, str string) (bool, error) { return true, nil },
 		[]testing.InternalTest{{"TestLargeMapGC", TestLargeMapGC}},
-		[]testing.InternalBenchmark{},
+		[]testing.InternalBenchmark{{"BenchmarkLargeMapGC", BenchmarkLargeMapGC}},
 		[]testing.InternalExample{})
 }
