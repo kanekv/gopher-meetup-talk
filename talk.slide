@@ -53,6 +53,14 @@ Co-founder, Sendgrid
 
 .play code/pipe2/pipe2.go /BEGIN/,/END/
 
+* Buffer Setup
+
+.play code/freelist/freelist.go /SS/,/SE/
+
+* Buffer Benchmark
+
+.play code/freelist/freelist.go /START/,/END/
+
 * More to come soon
 
 * SendGrid is HIRING!!!
