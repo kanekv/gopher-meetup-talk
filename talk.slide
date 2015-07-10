@@ -27,43 +27,43 @@ Co-founder, Sendgrid
 
 * Environment test
 
-.play code/envs.go
+.play -numbers code/envs.go
 
 * Large maps
 
-.play code/big_maps/big_map.go /BEGIN/,/END/
+.play -numbers code/big_maps/big_map.go /BEGIN/,/END/
 
 * Large linked lists
 
-.play code/linked_lists/linked_list.go /BEGIN/,/END/
+.play -numbers code/linked_lists/linked_list.go /BEGIN/,/END/
 
 * Slices
 
-.play code/slices/slice.go /BEGIN/,/END/
+.play -numbers code/slices/slice.go /BEGIN/,/END/
 
 * Pipes Example 1
 
-.play code/pipe1/pipe1.go /BEGIN/,/END/
+.play -numbers code/pipe1/pipe1.go /BEGIN/,/END/
 
 * Pipes Example 2 setup
 
-.code code/pipe2/pipe2.go /SETUP_START/,/SETUP_END/
+.code -numbers code/pipe2/pipe2.go /SETUP_START/,/SETUP_END/
 
 * Pipes Example 2
 
-.play code/pipe2/pipe2.go /BEGIN/,/END/
+.play -numbers code/pipe2/pipe2.go /BEGIN/,/END/
 
 * Buffer Setup
 
-.code code/freelist/freelist.go /SS/,/SE/
+.code -numbers code/freelist/freelist.go /SS/,/SE/
 
 * Buffer Benchmark
 
-.play code/freelist/freelist.go /START/,/END/
+.play -numbers code/freelist/freelist.go /START/,/END/
 
 * Maps
 
-.play code/maps/map.go /START/,/END/
+.play -numbers code/maps/map.go /START/,/END/
 
 * More to come soon
 
