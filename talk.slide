@@ -31,15 +31,15 @@ Co-founder, Sendgrid
 
 * Large maps
 
-.play code/big_maps/big_map_test.go /BEGIN/,/END/
+.play code/big_maps/big_map.go /BEGIN/,/END/
 
 * Large linked lists
 
-.play code/linked_lists/linked_list_test.go /BEGIN/,/END/
+.play code/linked_lists/linked_list.go /BEGIN/,/END/
 
 * Slices
 
-.play code/slices/slice_test.go /BEGIN/,/END/
+.play code/slices/slice.go /BEGIN/,/END/
 
 * More to come soon
 
