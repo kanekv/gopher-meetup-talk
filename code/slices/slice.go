@@ -29,9 +29,6 @@ func TestSliceByte(t *testing.T) {
 
 // END OMIT
 
-func BenchmarkSlice(b *testing.B) {
-}
-
 func main() {
 	log.Println(runtime.Version())
 	flag.Set("test.bench", "foo")
@@ -39,6 +36,6 @@ func main() {
 
 	testing.Main(func(pat, str string) (bool, error) { return true, nil },
 		[]testing.InternalTest{{"TestSlice", TestSlice}, {"TestSliceByte", TestSliceByte}},
-		[]testing.InternalBenchmark{{"BenchmarkSlice", BenchmarkSlice}},
+		[]testing.InternalBenchmark{},
 		[]testing.InternalExample{})
 }
