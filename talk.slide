@@ -47,7 +47,7 @@ Co-founder, Sendgrid
 
 * Pipes Example 2 setup
 
-.play code/pipe2/pipe2.go /SETUP_START/,/SETUP_END/
+.code code/pipe2/pipe2.go /SETUP_START/,/SETUP_END/
 
 * Pipes Example 2
 
@@ -55,7 +55,7 @@ Co-founder, Sendgrid
 
 * Buffer Setup
 
-.play code/freelist/freelist.go /SS/,/SE/
+.code code/freelist/freelist.go /SS/,/SE/
 
 * Buffer Benchmark
 
