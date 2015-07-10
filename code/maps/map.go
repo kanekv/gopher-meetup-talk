@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"log"
 	"runtime"
 	"testing"
 )
@@ -30,7 +30,7 @@ func TestMap2(t *testing.T) {
 // END OMIT
 
 func main() {
-	fmt.Println(runtime.Version())
+	log.Println(runtime.Version())
 	flag.Set("test.bench", "foo")
 	flag.Set("test.v", "true")
 

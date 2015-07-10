@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"log"
 	"runtime"
 	"testing"
 	"time"
@@ -15,7 +15,7 @@ func TestSlice(t *testing.T) {
 	for i := 0; i < 1e6; i++ {
 		slice = append(slice, "1234567890abcdef")
 	}
-	println("TOTAL time string: ", time.Since(start)/1e6)
+	log.Println("TOTAL time string: ", time.Since(start)/1e6)
 }
 
 func TestSliceByte(t *testing.T) {
@@ -24,7 +24,7 @@ func TestSliceByte(t *testing.T) {
 	for i := 0; i < 1e6; i++ {
 		sliceBytes = append(sliceBytes, [16]byte{})
 	}
-	println("TOTAL time bytes: ", time.Since(start)/1e6)
+	log.Println("TOTAL time bytes: ", time.Since(start)/1e6)
 }
 
 func BenchmarkSlice(b *testing.B) {
@@ -33,7 +33,7 @@ func BenchmarkSlice(b *testing.B) {
 // END OMIT
 
 func main() {
-	fmt.Println(runtime.Version())
+	log.Println(runtime.Version())
 	flag.Set("test.bench", "foo")
 	flag.Set("test.v", "true")
 

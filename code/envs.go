@@ -1,16 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"runtime"
 	"runtime/debug"
 )
 
 func main() {
-	fmt.Println("GOMAXPROCS=", runtime.GOMAXPROCS(0))
-	fmt.Println("NumCPUs=", runtime.NumCPU())
-	fmt.Println("NumCgoCall=", runtime.NumCgoCall())
-	fmt.Println("NumGoroutines=", runtime.NumGoroutine())
-	fmt.Println("Version=", runtime.Version())
+	log.Println("Version=", runtime.Version())
+	log.Println("GOMAXPROCS=", runtime.GOMAXPROCS(0))
+	log.Println("NumCPUs=", runtime.NumCPU())
+	log.Println("NumCgoCall=", runtime.NumCgoCall())
+	log.Println("NumGoroutines=", runtime.NumGoroutine())
 	debug.PrintStack()
 }

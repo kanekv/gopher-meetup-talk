@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"flag"
-	"fmt"
+	"log"
 	"runtime"
 	"strings"
 	"sync"
@@ -45,7 +45,7 @@ func BenchmarkFreelist2(b *testing.B) {
 // END OMIT
 
 func main() {
-	fmt.Println(runtime.Version())
+	log.Println(runtime.Version())
 	flag.Set("test.bench", "foo")
 	flag.Set("test.v", "true")
 
