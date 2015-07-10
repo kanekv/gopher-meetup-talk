@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"flag"
-	"fmt"
 	"io"
+	"log"
 	"runtime"
 	"strings"
 	"sync"
@@ -52,13 +52,13 @@ func TestPipe2(t *testing.T) {
 		wg.Done()
 	}()
 	wg.Wait()
-	fmt.Println("TOTAL time Pipe2: ", time.Since(start)/1e6)
+	log.Println("TOTAL time Pipe2: ", time.Since(start)/1e6)
 }
 
 // END OMIT
 
 func main() {
-	fmt.Println(runtime.Version())
+	log.Println(runtime.Version())
 	flag.Set("test.bench", "foo")
 	flag.Set("test.v", "true")
 

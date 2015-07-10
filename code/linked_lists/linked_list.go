@@ -3,6 +3,7 @@ package main
 import (
 	"container/list"
 	"flag"
+	"log"
 	"math/rand"
 	"runtime"
 	"testing"
@@ -30,6 +31,7 @@ func BenchmarkLinkedList(b *testing.B) {
 // END OMIT
 
 func main() {
+	log.Println(runtime.Version())
 	flag.Set("test.bench", "Large")
 	flag.Set("test.v", "true")
 

@@ -35,7 +35,7 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 
 * Environment test
 
-.play code/envs.go
+.play -numbers code/envs.go
 
 * Garbage collection: workarounds
 - Limit pointers
@@ -47,28 +47,54 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 
 * Large maps
 
-.play code/big_maps/big_map.go /BEGIN/,/END/
+.play -numbers code/big_maps/big_map.go /BEGIN/,/END/
 
 * Large linked lists
 
-.play code/linked_lists/linked_list.go /BEGIN/,/END/
+.play -numbers code/linked_lists/linked_list.go /BEGIN/,/END/
 
 * Slices
 
-.play code/slices/slice.go /BEGIN/,/END/
+.play -numbers code/slices/slice.go /BEGIN/,/END/
 
 * Pipes Example 1
 
-.play code/pipe1/pipe1.go /BEGIN/,/END/
+.play -numbers code/pipe1/pipe1.go /BEGIN/,/END/
 
 * Pipes Example 2 setup
 
-.play code/pipe2/pipe2.go /SETUP_START/,/SETUP_END/
+.code -numbers code/pipe2/pipe2.go /SETUP_START/,/SETUP_END/
 
 * Pipes Example 2
 
-.play code/pipe2/pipe2.go /BEGIN/,/END/
+.play -numbers code/pipe2/pipe2.go /BEGIN/,/END/
+
+* Buffer Setup
+
+.code -numbers code/freelist/freelist.go /SS/,/SE/
+
+* Buffer Benchmark
+
+.play -numbers code/freelist/freelist.go /START/,/END/
+
+* Maps
+
+.play -numbers code/maps/map.go /START/,/END/
 
 * Disk IO Solutions
 Buffering disk writes, vm.dirty_ratio/vm.dirty_background_ratio
 
+* SendGrid is HIRING!!!
+
+.link https://sendgrid.com/careers
+
+4 difference offices:
+
+- Denver, Colorado
+- Boulder, Colorado
+- Orange County, California
+- Redwood City, California
+
+Hiring for all levels and positions
+
+*Come* *work* *with* *us!*
