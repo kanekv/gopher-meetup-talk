@@ -29,6 +29,7 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 
 * Bottlenecks
 - Garbage collection: prevents utilizing available CPU
+- io.Copy has hidden copy and allocation if WriteTo/ReadFrom methods are missing
 - Disk writes, can't enable TRIM, page size alignment
 - Limiting number of CGO/syscalls
 - stdlib inefficiencies: http (parsing multipart forms), net/smtp.Client
@@ -40,22 +41,22 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 * Garbage collection: workarounds
 - Limit pointers
 - Reuse objects
+- Add WriteTo/ReadFrom methods
 - Slice/map preallocation
 - Smaller datatypes
 - Flat heap structure
-
-
-* Large maps
-
-.play -numbers code/big_maps/big_map.go /BEGIN/,/END/
 
 * Large linked lists
 
 .play -numbers code/linked_lists/linked_list.go /BEGIN/,/END/
 
-* Slices
+* Slices: 
 
 .play -numbers code/slices/slice.go /BEGIN/,/END/
+
+* Slices: no GC
+
+.play -numbers code/slices/slice_nogc.go /BEGIN/,/END/
 
 * Pipes Example 1
 
@@ -77,12 +78,108 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 
 .play -numbers code/freelist/freelist.go /START/,/END/
 
-* Maps
+* Maps in 1.4 have bug (9477)
 
 .play -numbers code/maps/map.go /START/,/END/
 
-* Disk IO Solutions
-Buffering disk writes, vm.dirty_ratio/vm.dirty_background_ratio
+* Debugging GC problems
+- GOGC setting, measure performance with disabled GC for potentially problematic code
+- GODEBUG=gctrace=1 - tracing garbage collection
+- gcflags=-m - analyzing heap escapes
+- pprof
+
+* GOGC
+- sets percentage of live heap increase required to trigger GC
+- higher percentage == less often GC runs, bigger heap, chance of longer STW
+
+* Reading output of GODEBUG=gctrace=1 (v1.4)
+    gc4(6): 1+4+29449+34 us, 0 -> 36 MB, 418 (645-227) objects, 5 goroutines, 45/21/0 sweeps, 
+    14(162) handoff, 1(1) steal, 180/54/1250 yields
+- gc4(6): 4 - number of the GC run since start, 6 - number of threads doing GC
+- 1+4+29449+34 us: GC phases: STW/SWEEP/MARK/FINISH, most important stop-the-world and marking phases
+- 0 -> 36 MB: 0 - live heap after previous GC, 36: live heap before this GC
+- 418 (645-227) objects: 645-227=418, number of objects allocated, freed (total since beginning) and currently in the heap
+
+* pprof
+- run test with: -cpuprofile=test.prof
+- go tool pprof --cum test.binary test.prof
+    (pprof) top30
+    3.33s of 3.37s total (98.81%)
+    Dropped 5 nodes (cum <= 0.02s)
+          flat  flat%   sum%        cum   cum%
+             0     0%     0%      2.97s 88.13%  System
+         2.43s 72.11% 72.11%      2.43s 72.11%  runtime.mach_semaphore_wait
+         0.48s 14.24% 86.35%      0.48s 14.24%  MCentral_Grow
+             0     0% 86.35%      0.33s  9.79%  GC
+         0.26s  7.72% 94.07%      0.26s  7.72%  runtime.usleep
+             0     0% 94.07%      0.07s  2.08%  github.com/sendgrid/go-labs/structures.TestMap    
+
+
+* Disk IO
+- Writes are aligned on page size
+- If possible never write less data than page size
+- Page size is different for different SSD models, 16KB page is currently a maximum
+- Wrap file handlers with buffers aligned by page size
+- SSD garbage collection, enable TRIM (unfortunately most raid controllers don't support it)
+
+* Buffered disk writes and freelist pool
+    type BufioWriterPool struct {
+        pool sync.Pool
+    }
+
+    func NewBufioWriterPool() *BufioWriterPool {
+        p := BufioWriterPool{}
+        p.pool = sync.Pool{
+            New: func() interface{} {
+                return bufio.NewWriterSize(nil, 16*1024)
+            },
+        }
+        return &p
+    }
+
+    func (b *BufioWriterPool) Get(w io.Writer) *bufio.Writer {
+        writer := b.pool.Get().(*bufio.Writer)
+        writer.Reset(w)
+        return writer
+    }
+
+    func (b *BufioWriterPool) Put(w *bufio.Writer) {
+        b.pool.Put(w)
+    }
+
+* Wrap files with buffers
+    f, err := fileCreate(m.FileName)
+    fileBuffer := fileBuffers.Get(f)
+    defer fileBuffers.Put(fileBuffer)
+
+* Linux disk caching
+- sysctl -a | grep dirty
+- by default on centos: vm.dirty_background_ratio = 10, vm.dirty_ratio = 20
+- decreasing cache: lower latency, might be lower overall throughput
+- increasing cache: higher throughput, risk of long pauses, higher risk to loose data
+
+* CGO/syscalls
+- every cgo/syscall may potentially cause new os thread creation 
+- keep number of syscalls/cgo calls limited or crash with "can't create thread"
+- default process limit is usually 1024 (ulimit -u)
+- golang os thread limit is hardcoded to 10000
+- openssl, cgo, syslog - too many syscalls
+
+* Limit syscalls
+    var threadLimit = make(chan struct{}, 1000)
+
+    func acquireThread() {
+        threadLimit <- struct{}{}
+    }
+
+    func releaseThread() {
+        <-threadLimit
+    }
+
+slow, use with caution where neccessary
+
+* stdlib
+- use sendfile
 
 * SendGrid is HIRING!!!
 

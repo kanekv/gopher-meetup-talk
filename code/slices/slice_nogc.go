@@ -4,12 +4,14 @@ import (
 	"flag"
 	"log"
 	"runtime"
+	"runtime/debug"
 	"testing"
 	"time"
 )
 
 // BEGIN OMIT
 func TestSlice(t *testing.T) {
+	debug.SetGCPercent(-1)
 	slice := make([]string, 1e6)
 	start := time.Now()
 	for i := 0; i < 10e6; i++ {
