@@ -41,6 +41,9 @@ Co-founder, Sendgrid
 
 .play code/slices/slice.go /BEGIN/,/END/
 
-* More to come soon
+* Pipes Example 1
 
+.play code/pipe1/pipe1.go /BEGIN/,/END/
+
+* More to come soon
 
