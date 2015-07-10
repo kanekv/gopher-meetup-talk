@@ -37,6 +37,10 @@ Co-founder, Sendgrid
 
 .play code/linked_lists/linked_list_test.go /BEGIN/,/END/
 
+* Slices
+
+.play code/slices/slice_test.go /BEGIN/,/END/
+
 * More to come soon
 
 
