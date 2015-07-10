@@ -47,10 +47,6 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 - Smaller datatypes
 - Flat heap structure
 
-* Large linked lists
-
-.play -numbers code/linked_lists/linked_list.go /BEGIN/,/END/
-
 * Slices: 
 
 .play -numbers code/slices/slice.go /BEGIN/,/END/
