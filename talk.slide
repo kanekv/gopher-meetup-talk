@@ -61,6 +61,10 @@ Co-founder, Sendgrid
 
 .play code/freelist/freelist.go /START/,/END/
 
+* Maps
+
+.play code/maps/map.go /START/,/END/
+
 * More to come soon
 
 * SendGrid is HIRING!!!
