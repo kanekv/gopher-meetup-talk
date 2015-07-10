@@ -45,5 +45,13 @@ Co-founder, Sendgrid
 
 .play code/pipe1/pipe1.go /BEGIN/,/END/
 
+* Pipes Example 2 setup
+
+.play code/pipe2/pipe2.go /SETUP_START/,/SETUP_END/
+
+* Pipes Example 2
+
+.play code/pipe2/pipe2.go /BEGIN/,/END/
+
 * More to come soon
 
