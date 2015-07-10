@@ -3,31 +3,47 @@ TBD - subtitle
 10 Jul 2015
 Tags: denvergophers, sendgrid, gophercon2015
 
-Kane Kim
-Engineer, SendGrid
+Kane Kim, Vasko Zdravevski, Isaac Saldana
+SendGrid
 kane@sendgrid.com
 https://github.com/Kane-Sendgrid/gopher-meetup-talk
 @KaneKK
 
-Vasko Zdravevski,
-Engineer, Sendgrid
-
-Isaac Saldana
-Co-founder, Sendgrid
 
 * Performance Tweaks - Lessons Learned
 - SendGrid's inbound mail servers process 19B+ emails/month
 - 137 servers around the world running Python/Twisted to handle that load
-- Rewrite in optimized Go, reducing server need from 137 -> 1
+- Rewrite in optimized Go, reducing server need from 137 -> less than 10
 
 * Topic Covered
 - Methodologies
 - Benchmarks and results
 - Tips and Tricks
 
+* Goals
+- Optimizing for hardware (network throughput, cpu, disk, memory)
+    1gb NIC, 24 cores ~$500
+    10gb NIC, 40 cores ~$800
+- Can't utilize bandwidth/cores = loosing money
+- Reach 500MB/s (4gbps) disk writes per server
+
+* Bottlenecks
+- Garbage collection: prevents utilizing available CPU
+- Disk writes, can't enable TRIM, page size alignment
+- Limiting number of CGO/syscalls
+- stdlib inefficiencies: http (parsing multipart forms), net/smtp.Client
+
 * Environment test
 
 .play code/envs.go
+
+* Garbage collection: workarounds
+- Limit pointers
+- Reuse objects
+- Slice/map preallocation
+- Smaller datatypes
+- Flat heap structure
+
 
 * Large maps
 
@@ -53,5 +69,6 @@ Co-founder, Sendgrid
 
 .play code/pipe2/pipe2.go /BEGIN/,/END/
 
-* More to come soon
+* Disk IO Solutions
+Buffering disk writes, vm.dirty_ratio/vm.dirty_background_ratio
 
