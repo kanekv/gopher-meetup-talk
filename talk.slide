@@ -11,7 +11,7 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 
 
 * Performance Tweaks - Lessons Learned
-- SendGrid's inbound mail servers process 19B+ emails/month
+- SendGrid's servers process 19B+ emails/month
 - 137 servers around the world running Python/Twisted to handle that load
 - Rewrite in optimized Go, reducing server need from 137 -> less than 10
 
@@ -91,6 +91,7 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
 * GOGC
 - sets percentage of live heap increase required to trigger GC
 - higher percentage == less often GC runs, bigger heap, chance of longer STW
+- go 1.5 has improved GC mechanism, STW phase is shorter, but cost of MARK phase is higher
 
 * Reading output of GODEBUG=gctrace=1 (v1.4)
     gc4(6): 1+4+29449+34 us, 0 -> 36 MB, 418 (645-227) objects, 5 goroutines, 45/21/0 sweeps, 
@@ -177,9 +178,40 @@ https://github.com/Kane-Sendgrid/gopher-meetup-talk
     }
 
 slow, use with caution where neccessary
+batch cgo/syscalls
 
 * stdlib
-- use sendfile
+- net/smtp.Client: dotWriter is slow, iterates 1 character at a time, doesn't reuse buffers
+- rewrote it to read lines and buffer pools: 2x speedup
+- TCPConn has sendfile optimization
+    func (c *TCPConn) ReadFrom(r io.Reader) (int64, error) {
+        if n, err, handled := sendFile(c.fd, r); handled {
+            return n, err
+        }
+        return genericReadFrom(c, r)
+    }
+- remove dotWriter completely, write to disk in wire format, can use sendfile now! +20% speedup
+
+* stdlib
+- http request parsing: doesn't reuse buffers, converts bytes to strings - more garbage, excessive copying
+    func slicebytetostring(b []byte) string {
+        if raceenabled && len(b) > 0 {
+            racereadrangepc(unsafe.Pointer(&b[0]),
+                uintptr(len(b)),
+                getcallerpc(unsafe.Pointer(&b)),
+                funcPC(slicebytetostring))
+        }
+        s, c := rawstring(len(b))
+        copy(c, b)
+        return s
+    }
+
+* obvious things to avoid
+- string concatenation (use buffers instead)
+- string to bytes and bytes to string conversions (stay in bytes)
+- defers in one-line functions (micro-optimization)
+- connections without timeouts (net/smtp.Client)
+- non-buffered IO
 
 * SendGrid is HIRING!!!
 
